@@ -9,7 +9,7 @@ if ! command -v node >/dev/null 2>&1; then
 fi
 
 for site_demo_argument in "$@"; do
-  if [[ "$site_demo_argument" == "--validate" ]]; then
+  if [[ "$site_demo_argument" == "--validate" || "$site_demo_argument" == "--help" || "$site_demo_argument" == "-h" ]]; then
     exec node "$site_demo_script_dir/record_site_demo.mjs" "$@"
   fi
 done

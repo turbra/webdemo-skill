@@ -199,6 +199,9 @@ Never store credentials, personal data, access tokens, or private customer infor
 
 ## Example commands
 
+The runner accepts both `--option value` and `--option=value` forms. Use
+`bash scripts/record_site_demo.sh --help` to list every option.
+
 Validate without installing Chromium:
 
 ```bash

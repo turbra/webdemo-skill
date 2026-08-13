@@ -38,6 +38,9 @@ Create a deterministic browser walkthrough from a small JSON plan. Use the bundl
        --base-url http://127.0.0.1:3000
      ```
 
+   The runner accepts both `--option value` and `--option=value` forms. Run
+   `bash scripts/record_site_demo.sh --help` for the complete CLI reference.
+
 8. Inspect the generated contact sheet with an image-viewing tool. Sample the first frame, a transition, and the last frame when the contact sheet is ambiguous.
 9. Report the absolute MP4 path, duration, resolution, codec, size, and whether audio is present. State any skipped routes or unverified interactions.
 

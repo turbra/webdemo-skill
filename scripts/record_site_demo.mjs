@@ -20,6 +20,10 @@ const supportedActions = new Set([
 ]);
 
 const options = parseOptions(process.argv.slice(2));
+if (options.help) {
+  printUsage();
+  process.exit(0);
+}
 const planPath = resolve(options.plan);
 const planDirectory = dirname(planPath);
 const plan = JSON.parse(await readFile(planPath, 'utf8'));
@@ -97,19 +101,59 @@ try {
 
 function parseOptions(argumentsList) {
   const parsed = {};
+  const valueOptions = new Map([
+    ['--plan', 'plan'],
+    ['--base-url', 'baseUrl'],
+    ['--site-root', 'siteRoot'],
+    ['--output-dir', 'outputDir'],
+  ]);
 
-  for (const argument of argumentsList) {
+  for (let index = 0; index < argumentsList.length; index += 1) {
+    const argument = argumentsList[index];
     if (argument === '--validate') parsed.validate = true;
     else if (argument === '--discard-failed') parsed.discardFailed = true;
-    else if (argument.startsWith('--plan=')) parsed.plan = argument.slice('--plan='.length);
-    else if (argument.startsWith('--base-url=')) parsed.baseUrl = argument.slice('--base-url='.length);
-    else if (argument.startsWith('--site-root=')) parsed.siteRoot = argument.slice('--site-root='.length);
-    else if (argument.startsWith('--output-dir=')) parsed.outputDir = argument.slice('--output-dir='.length);
-    else throw new Error(`Unknown option: ${argument}`);
+    else if (argument === '--help' || argument === '-h') parsed.help = true;
+    else {
+      let matched = false;
+      for (const [option, property] of valueOptions) {
+        if (argument === option) {
+          const value = argumentsList[index + 1];
+          if (!value || value.startsWith('-')) throw new Error(`${option} requires a value.`);
+          parsed[property] = value;
+          index += 1;
+          matched = true;
+          break;
+        }
+        if (argument.startsWith(`${option}=`)) {
+          const value = argument.slice(option.length + 1);
+          if (!value) throw new Error(`${option} requires a value.`);
+          parsed[property] = value;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) throw new Error(`Unknown option: ${argument}`);
+    }
   }
 
-  if (!parsed.plan) throw new Error('Pass an absolute or relative plan path with --plan=<path>.');
+  if (!parsed.help && !parsed.plan) throw new Error('Pass a plan path with --plan <path> or --plan=<path>.');
   return parsed;
+}
+
+function printUsage() {
+  console.log(`Usage:
+  bash scripts/record_site_demo.sh --plan <path> [options]
+
+Options:
+  --plan <path>          Walkthrough plan JSON. Required.
+  --base-url <url>       Record an existing server.
+  --site-root <path>     Serve and record a static site directory.
+  --output-dir <path>    Write generated media to this directory.
+  --validate             Validate the plan without recording.
+  --discard-failed       Remove raw captures after a failed recording.
+  -h, --help             Show this help text.
+
+Value options accept both --option value and --option=value.`);
 }
 
 function validatePlan(candidate) {
