@@ -1,6 +1,9 @@
 {
   "name": "automated-site-demo-runtime",
   "private": true,
+  "scripts": {
+    "test": "node test_cli.mjs"
+  },
   "dependencies": {
     "playwright": "1.62.1"
   }

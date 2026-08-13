@@ -44,16 +44,16 @@ To run the recorder directly, copy the template and adjust its selectors and act
 cp ~/.codex/skills/automated-site-demo/assets/demo-plan.template.json ./demo-plan.json
 
 bash ~/.codex/skills/automated-site-demo/scripts/record_site_demo.sh \
-  --plan=./demo-plan.json \
-  --site-root=.
+  --plan ./demo-plan.json \
+  --site-root .
 ```
 
 For an application already running locally or remotely, use `--base-url` instead of `--site-root`:
 
 ```sh
 bash ~/.codex/skills/automated-site-demo/scripts/record_site_demo.sh \
-  --plan=./demo-plan.json \
-  --base-url=http://127.0.0.1:3000
+  --plan ./demo-plan.json \
+  --base-url http://127.0.0.1:3000
 ```
 
 ## Demo Plan
@@ -80,9 +80,12 @@ Validate a plan without installing Chromium:
 
 ```sh
 bash scripts/record_site_demo.sh \
-  --plan=./demo-plan.json \
+  --plan ./demo-plan.json \
   --validate
 ```
+
+Value options accept both `--option value` and `--option=value`. Run
+`bash scripts/record_site_demo.sh --help` for the complete CLI reference.
 
 ## Output
 
@@ -102,6 +105,14 @@ Videos are silent by default. Add narration, captions, music, or additional bran
 - Linux, macOS, or Windows with a Bash environment
 
 The recorder can serve static files itself. Framework applications should use their existing development or preview command and pass the resulting URL with `--base-url`.
+
+## Development
+
+Run the CLI regression suite before publishing changes:
+
+```sh
+npm --prefix scripts test
+```
 
 ## Safety
 
