@@ -1,0 +1,7 @@
+{
+  "name": "automated-site-demo-runtime",
+  "private": true,
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}

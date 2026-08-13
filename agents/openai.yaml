@@ -1,0 +1,4 @@
+interface:
+  display_name: "Automated Site Demo"
+  short_description: "Record repeatable browser walkthrough videos"
+  default_prompt: "Use $automated-site-demo to record a polished desktop and mobile walkthrough of this site."
